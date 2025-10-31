@@ -212,6 +212,7 @@
       if (downloadLink.href && URL_API) {
         URL_API.revokeObjectURL(downloadLink.href);
       }
+      downloadLink.removeAttribute('href');
       downloadLink.style.display = 'none';
     }
 
@@ -248,6 +249,18 @@
       });
 
       dropArea.addEventListener('drop', handleDrop);
+
+      dropArea.addEventListener('keydown', function (event) {
+        var key = event.key || event.keyCode;
+        var isActivateKey = key === 'Enter' || key === ' ' || key === 13 || key === 32;
+        if (!isActivateKey) {
+          return;
+        }
+        event.preventDefault();
+        if (fileInput && typeof fileInput.click === 'function') {
+          fileInput.click();
+        }
+      });
     }
 
     function ensureFFmpegLoaded() {

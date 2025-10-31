@@ -17,6 +17,7 @@
 - ブラウザが ES2015 構文や WebAssembly、Promise・Blob・URL.createObjectURL（または webkitURL の `createObjectURL` / `revokeObjectURL`）などの API に対応していない場合は、対応ブラウザへの切り替えを促すメッセージが表示されます。
 - Codespaces などクロスオリジン分離が無効な環境では、ページが真っ白になる場合があります。その際は外部ブラウザで開き、Console に表示されるエラーを確認してください。
 - favicon を空のデータ URI として同梱しているため、開発サーバーで `favicon.ico` の 404 エラーが出ることはありません。
+- ドロップエリアはキーボードでフォーカスし、Enter キーまたは Space キーを押すことでファイル選択ダイアログを開けます。
 
 ## よくある質問
 
