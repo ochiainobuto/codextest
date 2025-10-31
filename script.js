@@ -338,6 +338,8 @@
       setStatus('変換を開始します…');
       hideDownloadLink();
 
+      var conversionSuccessful = false;
+
       ensureFFmpegLoaded()
         .then(function () {
           setStatus('フレームを書き込み中です…');
@@ -370,16 +372,20 @@
           downloadLink.href = url;
           downloadLink.style.display = 'inline-block';
           setStatus('変換が完了しました。ダウンロードリンクから保存できます。');
+          conversionSuccessful = true;
         })
         .catch(function (error) {
           console.error(error);
           setStatus('変換中にエラーが発生しました。コンソールを確認してください。', true);
+          progressLabel.textContent = 'エラー';
         })
         .then(function () {
           cleanupFS(extension);
           convertButton.disabled = false;
-          progressEl.value = 100;
-          progressLabel.textContent = '100%';
+          if (conversionSuccessful) {
+            progressEl.value = 100;
+            progressLabel.textContent = '100%';
+          }
         });
     });
   }
@@ -392,8 +398,11 @@
   }
 
   var supportsWasm = typeof WebAssembly === 'object';
+  var supportsPromise = typeof Promise === 'function' && typeof Promise.resolve === 'function';
+  var supportsBlob = typeof Blob === 'function';
+  var supportsURL = typeof URL === 'function' && typeof URL.createObjectURL === 'function';
 
-  if (!supportsES2015 || !supportsWasm) {
+  if (!supportsES2015 || !supportsWasm || !supportsPromise || !supportsBlob || !supportsURL) {
     showUnsupportedBrowserMessage();
     return;
   }
