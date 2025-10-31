@@ -17,3 +17,9 @@
 - ブラウザが ES2015 構文や WebAssembly、Promise・Blob・URL.createObjectURL などの API に対応していない場合は、対応ブラウザへの切り替えを促すメッセージが表示されます。
 - Codespaces などクロスオリジン分離が無効な環境では、ページが真っ白になる場合があります。その際は外部ブラウザで開き、Console に表示されるエラーを確認してください。
 - favicon を空のデータ URI として同梱しているため、開発サーバーで `favicon.ico` の 404 エラーが出ることはありません。
+
+## よくある質問
+
+### Web 上で MP4 を作成できますか？
+
+はい。本アプリは [ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm) を利用し、選択した静止画をブラウザ内の仮想ファイルシステムへ書き込んでから `-framerate 30000/1001` で `libx264` を使って MP4 を生成し、`Blob` と `URL.createObjectURL` でダウンロードリンクを提供しています。ブラウザが WebAssembly や ES2015 の機能を備えていれば、追加のサーバー処理なしで MP4 を作成可能です。対応していないブラウザでは互換性メッセージが表示されるので、Chrome / Edge / Firefox / Safari など最新のブラウザをご利用ください。
