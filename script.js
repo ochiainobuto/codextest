@@ -1,14 +1,11 @@
 (function () {
   'use strict';
 
-  if (!window.FFmpeg) {
-    console.error('FFmpeg.wasm が読み込めませんでした。');
+
     return;
   }
 
   const { createFFmpeg, fetchFile } = window.FFmpeg;
-
-  const app = document.querySelector('#app');
 
   app.innerHTML = `
     <main>
@@ -52,7 +49,7 @@
   const downloadLink = document.querySelector('#download-link');
 
   let selectedFiles = [];
-  const ffmpeg = createFFmpeg({ log: true });
+
   let isFFmpegLoaded = false;
 
   const sortFiles = (files) =>
