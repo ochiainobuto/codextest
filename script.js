@@ -3,6 +3,19 @@
 
   var CDN_URL = 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.7/dist/ffmpeg.min.js';
   var app = document.querySelector('#app');
+  var standardURL = typeof window.URL === 'object' || typeof window.URL === 'function' ? window.URL : null;
+  var legacyURL = typeof window.webkitURL === 'object' || typeof window.webkitURL === 'function' ? window.webkitURL : null;
+  var URL_API = null;
+
+  if (standardURL && typeof standardURL.createObjectURL === 'function' && typeof standardURL.revokeObjectURL === 'function') {
+    URL_API = standardURL;
+  } else if (
+    legacyURL &&
+    typeof legacyURL.createObjectURL === 'function' &&
+    typeof legacyURL.revokeObjectURL === 'function'
+  ) {
+    URL_API = legacyURL;
+  }
 
   if (!app) {
     return;
@@ -196,8 +209,8 @@
     }
 
     function hideDownloadLink() {
-      if (downloadLink.href) {
-        URL.revokeObjectURL(downloadLink.href);
+      if (downloadLink.href && URL_API) {
+        URL_API.revokeObjectURL(downloadLink.href);
       }
       downloadLink.style.display = 'none';
     }
@@ -368,7 +381,7 @@
           var data = ffmpeg.FS('readFile', 'output.mp4');
           var buffer = data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength);
           var blob = new Blob([buffer], { type: 'video/mp4' });
-          var url = URL.createObjectURL(blob);
+          var url = URL_API ? URL_API.createObjectURL(blob) : '';
           downloadLink.href = url;
           downloadLink.style.display = 'inline-block';
           setStatus('変換が完了しました。ダウンロードリンクから保存できます。');
@@ -400,7 +413,7 @@
   var supportsWasm = typeof WebAssembly === 'object';
   var supportsPromise = typeof Promise === 'function' && typeof Promise.resolve === 'function';
   var supportsBlob = typeof Blob === 'function';
-  var supportsURL = typeof URL === 'function' && typeof URL.createObjectURL === 'function';
+  var supportsURL = !!URL_API;
 
   if (!supportsES2015 || !supportsWasm || !supportsPromise || !supportsBlob || !supportsURL) {
     showUnsupportedBrowserMessage();
