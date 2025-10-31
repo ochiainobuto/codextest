@@ -1,25 +1,7 @@
 (function () {
   'use strict';
 
-  const app = document.querySelector('#app');
 
-  if (!window.FFmpeg) {
-    console.error('FFmpeg.wasm が読み込めませんでした。');
-    if (app) {
-      app.innerHTML = `
-        <main>
-          <h1>アプリを読み込めませんでした</h1>
-          <p class="description">
-            FFmpeg.wasm の読込に失敗しました。以下を確認してください。
-          </p>
-          <ul class="file-list troubleshooting">
-            <li>Ports タブから <strong>5500</strong> 番ポートを開き、外部ブラウザで <code>index.html</code> を表示する。</li>
-            <li>ブラウザの開発者ツール Console に SharedArrayBuffer や Cross-Origin 関連のエラーが出ていないか確認する。</li>
-            <li>ネットワークに制限がある場合は再読込を試すか、別のブラウザで表示する。</li>
-          </ul>
-        </main>
-      `;
-    }
     return;
   }
 
@@ -67,10 +49,7 @@
   const downloadLink = document.querySelector('#download-link');
 
   let selectedFiles = [];
-  const ffmpeg = createFFmpeg({
-    log: true,
-    corePath: 'https://unpkg.com/@ffmpeg/core@0.12.7/dist/ffmpeg-core.js',
-  });
+
   let isFFmpegLoaded = false;
 
   const sortFiles = (files) =>
