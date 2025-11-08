@@ -133,6 +133,19 @@ ul.file-list {
   background: #f8fafc;
 }
 
+/* ここが codex 側の追加スタイル（そのまま採用） */
+ul.file-list.troubleshooting {
+  list-style: disc inside;
+  max-height: none;
+  overflow: visible;
+  padding: 16px 24px;
+  border-color: #cbd5f5;
+}
+
+ul.file-list.troubleshooting li {
+  border-bottom: none;
+  padding: 6px 0;
+}
 
 ul.file-list li {
   padding: 8px 12px;
