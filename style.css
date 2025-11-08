@@ -133,6 +133,7 @@ ul.file-list {
   background: #f8fafc;
 }
 
+/* ここが codex 側の追加スタイル（そのまま採用） */
 ul.file-list.troubleshooting {
   list-style: disc inside;
   max-height: none;
