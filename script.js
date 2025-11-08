@@ -164,10 +164,42 @@
       return str;
     }
 
+    function extractFrameNumber(name) {
+      if (!name) {
+        return null;
+      }
+      var lower = String(name).toLowerCase();
+      var match = lower.match(/(\d+)(?=\.[^.]+$)/);
+      if (!match) {
+        return null;
+      }
+      var value = parseInt(match[1], 10);
+      return isNaN(value) ? null : value;
+    }
+
+    function compareNames(aName, bName) {
+      var aLower = (aName ? String(aName) : '').toLowerCase();
+      var bLower = (bName ? String(bName) : '').toLowerCase();
+      if (aLower < bLower) {
+        return -1;
+      }
+      if (aLower > bLower) {
+        return 1;
+      }
+      return 0;
+    }
+
     function sortFiles(files) {
       var array = Array.prototype.slice.call(files);
       array.sort(function (a, b) {
-        return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
+        var aNumber = extractFrameNumber(a && a.name);
+        var bNumber = extractFrameNumber(b && b.name);
+
+        if (aNumber !== null && bNumber !== null && aNumber !== bNumber) {
+          return aNumber - bNumber;
+        }
+
+        return compareNames(a && a.name, b && b.name);
       });
       return array;
     }
